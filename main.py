@@ -17,13 +17,16 @@ class Neuron:
 class Layer:
 
     def __init__(self, inp, n):
-        neurons = Neuron
+
 
 
 
 #####################################################################
 
-n = Neuron([1,2,3,4],[5,6,7,8])
+inp = [1,2,3,4]
+initweights = [0.5] * 4
+
+n = Neuron(inp, initweights)
 
 print(n.S)
 print(n.output())
