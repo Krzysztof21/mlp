@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as sci
 import numpy as np
 import dataLoader
+import time
 
 
 def sigmoid(x):
@@ -38,9 +39,12 @@ if __name__ == "__main__":
     input = dataLoader.inp
     output = dataLoader.output
     nn = NeuralNetwork(input,output)
-
+    plt.ion()
     for i in range(1500):
         nn.feedforward()
         nn.backprop()
+        plt.plot(nn.output)
+        plt.draw()
+        time.sleep(0.01)
 
 print(nn.output)
