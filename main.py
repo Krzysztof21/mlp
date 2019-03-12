@@ -1,33 +1,26 @@
 import math as m
+import neuron
+import matplotlib.pyplot as plt
+import scipy.stats as sci
+import numpy as np
 
-class Neuron:
+#class Layer:
 
-    S = 0
-
-    def __init__(self, inp, wei):
-        self.inputs = inp
-        self.weights = wei
-        for i in range(len(self.inputs)):
-            self.S = self.S + self.weights[i] * self.inputs[i]
-
-
-    def output(self):
-        return m.tanh(self.S)
-
-class Layer:
-
-    def __init__(self, inp, n):
+    #def __init__(self, inp, n):
 
 
 
 
-#####################################################################
+
+#------------------------------------------------------------
 
 inp = [1,2,3,4]
 initweights = [0.5] * 4
 
-n = Neuron(inp, initweights)
+n = neuron.Neuron(inp, initweights)
 
-print(n.S)
-print(n.output())
+import dataLoader
+
+#plt.plot(inp, initweights)
+#plt.show()
 
