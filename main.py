@@ -1,50 +1,38 @@
 import math as m
-import neuron
+import mlp
 import matplotlib.pyplot as plt
 import scipy.stats as sci
 import numpy as np
-import dataLoader
-import time
 
 
-def sigmoid(x):
-    return 1.0/(1+ np.exp(-x))
 
-def sigmoid_derivative(x):
-    return x * (1.0 - x)
+#------------------------------------------------------------
 
-class NeuralNetwork:
-    def __init__(self, x, y):
-        self.input      = x
-        self.weights1   = np.random.rand(4, self.input.shape[0])
-        self.weights2   = np.random.rand(self.input.shape[0],3)
-        self.y          = y
-        self.output     = np.zeros(self.y.shape)
+inp = [1,2,3,4]
+initweights = [0.5] * 4
 
-    def feedforward(self):
-        self.layer1 = sigmoid(np.dot(self.input, self.weights1))
-        self.output = sigmoid(np.dot(self.layer1, self.weights2))
+n = mlp.Neuron(initweights)
 
-    def backprop(self):
-        # application of the chain rule to find derivative of the loss function with respect to weights2 and weights1
-        d_weights2 = np.dot(self.layer1.T, (2*(self.y - self.output) * sigmoid_derivative(self.output)))
-        d_weights1 = np.dot(self.input.T,  (np.dot(2*(self.y - self.output) * sigmoid_derivative(self.output), self.weights2.T) * sigmoid_derivative(self.layer1)))
+lay1 = mlp.Layer(4,initweights)
+lay1.layerOutput(inp)
+print(lay1.out)
 
-        # update the weights with the derivative (slope) of the loss function
-        self.weights1 += d_weights1
-        self.weights2 += d_weights2
+lay2 = mlp.Layer(8, initweights)
+lay2.layerOutput(inp)
+print(lay2.out)
 
+net = mlp.Network(4,4)
+net.addLayer(lay1)
+net.addLayer(lay2)
+net.addInputLayer(lay2)
+weightsSix = [0.5]*8
+net.addArbLayer(8)
 
-if __name__ == "__main__":
-    input = dataLoader.inp
-    output = dataLoader.output
-    nn = NeuralNetwork(input,output)
-    plt.ion()
-    for i in range(1500):
-        nn.feedforward()
-        nn.backprop()
-        plt.plot(nn.output)
-        plt.draw()
-        time.sleep(0.01)
+inp2 = [1,2,3,4,3,12,4,5]
+print(net.Layers)
+print(net.getNetOutput(inp2))
 
-print(nn.output)
+#import dataLoader
+
+#plt.plot(inp, initweights)
+#plt.show()
