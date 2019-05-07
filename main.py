@@ -5,6 +5,7 @@ import scipy.stats as sci
 import numpy as np
 
 
+
 #------------------------------------------------------------
 
 inp = [1,2,3,4]
@@ -35,4 +36,3 @@ print(net.getNetOutput(inp2))
 
 #plt.plot(inp, initweights)
 #plt.show()
-
