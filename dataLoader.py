@@ -12,5 +12,5 @@ for i in range(len(inp)):
     inp[i] = np.divide(inp[i],maxima)
 
 
-print(inp) 
+print(inp)
 
