@@ -1,6 +1,7 @@
 import math as m
 import numpy as np
 import time
+import random as rand
 
 class Neuron:
 
@@ -21,16 +22,17 @@ class Neuron:
 
 class Layer:
 
-    def __init__(self, noNeurons, weights, function = 'tanh'):
+    def __init__(self, noNeurons, weights, function = 'tanh', name = '<Name not specified>'):
         self.noNeurons = noNeurons
         self.Neurons = []
         self.function = function
         self.weights = weights
+        self.name = name
         for i in range(noNeurons):
             self.Neurons.append(Neuron(self.weights, self.function))
 
     def __repr__(self):
-        return "\nNo. of neurons " + str(self.noNeurons) + ", activation function: " + str(self.function)
+        return "\nName: " + str(self.name) +  ", no. of neurons " + str(self.noNeurons) + ", no. of weights " + str(len(self.weights)) + ", activation function: " + str(self.function)
 
     def layerOutput(self, input):
         self.input = input
@@ -48,19 +50,33 @@ class Network:
         self.inputSize = inputSize
         self.outputSize = outputSize
 
-    def addArbLayer(self, noNeurons, function = 'tanh'):
-        weights = [0.5] * len(self.Layers[len(self.Layers)-1].Neurons)
-        layer = Layer(noNeurons, weights, function)
-        self.addLayer(layer)
-
-    def addLayer(self, layer):
+    def __addLayer(self, layer):
         self.Layers.append(layer)
 
-    def addInputLayer(self, layer):
+    def addArbLayer(self, noNeurons, function = 'tanh'):
+        if len(self.Layers) == 0:
+            weights = [rand.random()] * self.inputSize
+        else:
+            weights = [rand.random()] * len(self.Layers[len(self.Layers)-1].Neurons)
+        name = "FC" + str(len(self.Layers))
+        layer = Layer(noNeurons, weights, function, name)
+        self.__addLayer(layer)
+
+    def addInputLayer(self, noNeurons, function = 'tanh'):
+        weights = [rand.random()] * self.inputSize
+        name = "Input"
+        layer = Layer(noNeurons, weights, function, name)
         if len(self.Layers) == 0:
             self.Layers.append(layer)
         else:
             self.Layers.insert(0, layer)
+            self.Layers[1].weights = [rand.random()] * noNeurons
 
-    def getNetOutput(self, input):
-        return self.Layers[len(self.Layers)-1].layerOutput(input)
+    def forwardPass(self, input):
+        if len(input) != self.inputSize:
+            return "Input size does not match expected size"
+        else:
+            self.output = input
+            for i in range(len(self.Layers)):
+                self.output = self.Layers[i].layerOutput(self.output)
+            return self.output

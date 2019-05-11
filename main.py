@@ -6,33 +6,27 @@ import numpy as np
 
 
 
-#------------------------------------------------------------
-
 inp = [1,2,3,4]
-initweights = [0.5] * 4
+initweights4 = [0.5] * 4
+initweights8 = [0.5] * 8
 
-n = mlp.Neuron(initweights)
+n = mlp.Neuron(initweights4)
 
-lay1 = mlp.Layer(4,initweights)
-lay1.layerOutput(inp)
-print(lay1.out)
+lay1 = mlp.Layer(8, initweights8)
 
-lay2 = mlp.Layer(8, initweights)
-lay2.layerOutput(inp)
-print(lay2.out)
+lay2 = mlp.Layer(4, initweights8)
 
-net = mlp.Network(4,4)
-net.addLayer(lay1)
-net.addLayer(lay2)
-net.addInputLayer(lay2)
-weightsSix = [0.5]*8
+
+net = mlp.Network(8,4)
+
+
 net.addArbLayer(8)
+net.addArbLayer(4)
+net.addArbLayer(4)
+net.addInputLayer(8)
 
 inp2 = [1,2,3,4,3,12,4,5]
 print(net.Layers)
-print(net.getNetOutput(inp2))
 
-#import dataLoader
+print(net.forwardPass(inp2))
 
-#plt.plot(inp, initweights)
-#plt.show()
