@@ -1,38 +1,33 @@
 import math as m
 import mlp
-import matplotlib.pyplot as plt
-import scipy.stats as sci
 import numpy as np
 
 
+net = mlp.Network(8,4)
 
-#------------------------------------------------------------
-
-inp = [1,2,3,4]
-initweights = [0.5] * 4
-
-n = mlp.Neuron(initweights)
-
-lay1 = mlp.Layer(4,initweights)
-lay1.layerOutput(inp)
-print(lay1.out)
-
-lay2 = mlp.Layer(8, initweights)
-lay2.layerOutput(inp)
-print(lay2.out)
-
-net = mlp.Network(4,4)
-net.addLayer(lay1)
-net.addLayer(lay2)
-net.addInputLayer(lay2)
-weightsSix = [0.5]*8
+net.addInputLayer(8)
 net.addArbLayer(8)
+net.addArbLayer(4)
+net.addArbLayer(4)
 
-inp2 = [1,2,3,4,3,12,4,5]
+X = np.array([[3, 2, 7, 1, 3, 2, 3, 5], [1, 2, 3, 4, 3, 12, 4, 5]])
+y = np.array([[0, 0, 1, 0], [1, 0, 0, 0]])
+
 print(net.Layers)
-print(net.getNetOutput(inp2))
 
-#import dataLoader
+lmbda = 1 
 
-#plt.plot(inp, initweights)
-#plt.show()
+netWeights = np.empty((0,1))
+for i in net.Layers:
+    netWeights = np.append(netWeights, i.weights.flatten())
+
+
+# calculating output of the network with a given input
+print(net.forwardPass(X[1]))
+
+# calculating cost of using a given set of weights
+print(net.costFunction(netWeights, X, y, 1))
+
+# calculation of gradient for each of the weights
+print(net.backpropagation(netWeights, X, y, 1))
+
