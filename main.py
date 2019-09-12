@@ -1,32 +1,33 @@
 import math as m
 import mlp
-import matplotlib.pyplot as plt
-import scipy.stats as sci
 import numpy as np
-
-
-
-inp = [1,2,3,4]
-initweights4 = [0.5] * 4
-initweights8 = [0.5] * 8
-
-n = mlp.Neuron(initweights4)
-
-lay1 = mlp.Layer(8, initweights8)
-
-lay2 = mlp.Layer(4, initweights8)
 
 
 net = mlp.Network(8,4)
 
-
+net.addInputLayer(8)
 net.addArbLayer(8)
 net.addArbLayer(4)
 net.addArbLayer(4)
-net.addInputLayer(8)
 
-inp2 = [1,2,3,4,3,12,4,5]
+X = np.array([[3, 2, 7, 1, 3, 2, 3, 5], [1, 2, 3, 4, 3, 12, 4, 5]])
+y = np.array([[0, 0, 1, 0], [1, 0, 0, 0]])
+
 print(net.Layers)
 
-print(net.forwardPass(inp2))
+lmbda = 1 
+
+netWeights = np.empty((0,1))
+for i in net.Layers:
+    netWeights = np.append(netWeights, i.weights.flatten())
+
+
+# calculating output of the network with a given input
+print(net.forwardPass(X[1]))
+
+# calculating cost of using a given set of weights
+print(net.costFunction(netWeights, X, y, 1))
+
+# calculation of gradient for each of the weights
+print(net.backpropagation(netWeights, X, y, 1))
 
